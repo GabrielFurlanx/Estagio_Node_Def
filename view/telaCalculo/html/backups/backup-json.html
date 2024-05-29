@@ -1,0 +1,91 @@
+function enviarTudo() {
+
+    // Capturar o valor do elemento HTML
+    var indice0 = document.querySelector('.indice0').innerText;
+    var indice1 = document.querySelector('.indice1').innerText;
+    var indice2 = document.querySelector('.indice2').innerText;
+    var indice3 = document.querySelector('.indice3').innerText;
+    var indice4 = document.querySelector('.indice4').innerText;
+    var indice5 = document.querySelector('.indice5').innerText;
+    var indice6 = document.querySelector('.indice6').innerText;
+    var indice7 = document.querySelector('.indice7').innerText;
+    var indice8 = document.querySelector('.indice8').innerText;
+    var indice9 = document.querySelector('.indice9').innerText;
+    var indice10 = document.querySelector('.indice10').innerText;
+    var indice11 = document.querySelector('.indice11').innerText;
+    var indice12 = document.querySelector('.indice12').innerText;
+    var indice13 = document.querySelector('.indice13').innerText;
+    var indice14 = document.querySelector('.indice14').innerText;
+    var ipaFinal = document.querySelector('.ipaFinal').innerText;
+    var ppFinal = document.querySelector('.ppFinal').innerText;
+
+     // Estruturar os dados para enviar ao servidor
+     var dadosIndice = {
+        indice0: indice0,
+        indice1: indice1,
+        indice2: indice2,
+        indice3: indice3,
+        indice4: indice4,
+        indice5: indice5,
+        indice6: indice6,
+        indice7: indice7,
+        indice8: indice8,
+        indice9: indice9,
+        indice10: indice10,
+        indice11: indice11,
+        indice12: indice12,
+        indice13: indice13,
+        indice14: indice14,
+        ipaFinal: ipaFinal,
+        ppFinal: ppFinal
+    };
+
+    // Estruturar os dados para enviar ao servidor
+    const form = document.getElementById('formValores');
+    const formData = new FormData(form);
+    const dadosValores = {};
+    formData.forEach((value, key) => {
+        dadosValores[key] = value;
+    });
+
+    // Converter os objetos JavaScript em JSON
+    var jsonDadosIndice = JSON.stringify(dadosIndice);
+    var jsonDadosValores = JSON.stringify(dadosValores);
+
+    // Exemplo de envio dos dados para o servidor
+    fetch('/valores', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: jsonDadosIndice
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Sucesso ao enviar índice:', data);
+        // Após enviar o índice com sucesso, enviar os valores
+        fetch('/valores', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonDadosValores
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            alert(result.message);
+        })
+        .catch(error => {
+            console.error('Erro ao cadastrar valores:', error);
+            alert('Erro ao cadastrar valores.');
+        });
+    })
+    .catch((error) => {
+        console.error('Erro ao enviar índice:', error);
+        alert('Erro ao enviar índice.');
+    });
+}
+
+// Exemplo de chamada da função
+enviarDados();
